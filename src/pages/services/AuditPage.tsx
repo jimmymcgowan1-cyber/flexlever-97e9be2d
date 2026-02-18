@@ -1,6 +1,7 @@
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Search, CheckCircle, FileText, BarChart3, ArrowRight, Hotel, Home, Briefcase, Wrench } from "lucide-react";
+import { Search, CheckCircle, ArrowRight, Hotel, Home, Briefcase, Wrench } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const deliverables = [
@@ -20,6 +21,10 @@ const useCases = [
 
 const AuditPage = () => (
   <main>
+    <Helmet>
+      <title>AI Automation Audit — FlexLever</title>
+      <meta name="description" content="A comprehensive analysis of your business operations to identify the highest-impact AI automation opportunities. Starting at $497." />
+    </Helmet>
     <section className="section-dark pt-28 pb-16">
       <div className="container mx-auto px-4 max-w-4xl text-center">
         <ScrollReveal>
@@ -60,6 +65,7 @@ const AuditPage = () => (
                 <div className="flex gap-3"><span className="text-primary font-bold">4.</span> You get a 1-hour presentation walking through every opportunity</div>
               </div>
               <p className="mt-6 text-sm font-medium">Starting at <span className="text-primary text-lg font-bold">$497</span></p>
+              <p className="mt-2"><Link to="/pricing" className="text-primary text-sm underline">See full pricing details →</Link></p>
             </div>
           </ScrollReveal>
         </div>

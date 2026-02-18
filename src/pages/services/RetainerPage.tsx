@@ -1,6 +1,7 @@
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Settings, CheckCircle, ArrowRight } from "lucide-react";
+import { Settings, CheckCircle } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const tiers = [
@@ -29,6 +30,10 @@ const tiers = [
 
 const RetainerPage = () => (
   <main>
+    <Helmet>
+      <title>AI Automation Retainer — FlexLever</title>
+      <meta name="description" content="Ongoing AI workflow implementation and optimization. Choose Bronze, Silver, or Gold tiers from $1,500-$3,500/mo." />
+    </Helmet>
     <section className="section-dark pt-28 pb-16">
       <div className="container mx-auto px-4 max-w-4xl text-center">
         <ScrollReveal>
@@ -69,6 +74,7 @@ const RetainerPage = () => (
             </ScrollReveal>
           ))}
         </div>
+        <p className="text-center mt-8"><Link to="/pricing" className="text-primary text-sm underline">See full pricing details →</Link></p>
       </div>
     </section>
 

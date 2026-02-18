@@ -13,14 +13,14 @@ const CountUp = ({ end, prefix = "", suffix = "", duration = 2000 }: CountUpProp
   const started = useRef(false);
 
   useEffect(() => {
+    let timer: ReturnType<typeof setInterval>;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
           started.current = true;
-          const start = 0;
-          const step = (end - start) / (duration / 16);
-          let current = start;
-          const timer = setInterval(() => {
+          const step = end / (duration / 16);
+          let current = 0;
+          timer = setInterval(() => {
             current += step;
             if (current >= end) {
               setCount(end);
@@ -34,7 +34,10 @@ const CountUp = ({ end, prefix = "", suffix = "", duration = 2000 }: CountUpProp
       { threshold: 0.5 }
     );
     if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (timer) clearInterval(timer);
+    };
   }, [end, duration]);
 
   return (

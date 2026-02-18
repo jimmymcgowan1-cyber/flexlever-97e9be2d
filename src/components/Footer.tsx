@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Linkedin, Twitter } from "lucide-react";
 
 const Footer = () => (
-  <footer className="section-navy-deep py-16">
+  <footer className="section-navy-deep py-16 pb-24 md:pb-16">
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
         {/* Brand */}
@@ -14,10 +14,10 @@ const Footer = () => (
             AI-powered business automation for service businesses. Work smarter, grow faster.
           </p>
           <div className="flex gap-3 mt-4">
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+            <a href="#" aria-label="LinkedIn" className="text-muted-foreground hover:text-primary transition-colors">
               <Linkedin className="h-5 w-5" />
             </a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+            <a href="#" aria-label="Twitter" className="text-muted-foreground hover:text-primary transition-colors">
               <Twitter className="h-5 w-5" />
             </a>
           </div>

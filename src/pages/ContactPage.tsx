@@ -1,9 +1,10 @@
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CheckCircle, Mail, Phone, Linkedin } from "lucide-react";
+import { CheckCircle, Mail, Linkedin } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -19,18 +20,35 @@ const ContactPage = () => {
   const { toast } = useToast();
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
-    setTimeout(() => {
-      toast({ title: "Message sent!", description: "We'll be in touch within 24 hours." });
+    const formData = new FormData(e.currentTarget);
+    try {
+      const response = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+        method: "POST",
+        body: formData,
+        headers: { Accept: "application/json" },
+      });
+      if (response.ok) {
+        toast({ title: "Message sent!", description: "We'll be in touch within 24 hours." });
+        (e.target as HTMLFormElement).reset();
+      } else {
+        toast({ title: "Error", description: "Something went wrong. Please try again.", variant: "destructive" });
+      }
+    } catch {
+      toast({ title: "Error", description: "Network error. Please try again.", variant: "destructive" });
+    } finally {
       setSubmitting(false);
-      (e.target as HTMLFormElement).reset();
-    }, 1000);
+    }
   };
 
   return (
     <main>
+      <Helmet>
+        <title>Contact — FlexLever AI Automation</title>
+        <meta name="description" content="Book a free 15-minute demo or send us a message. We'll show you how FlexLever can automate your business operations." />
+      </Helmet>
       <section className="section-dark pt-28 pb-16">
         <div className="container mx-auto px-4 max-w-4xl text-center">
           <ScrollReveal>
@@ -47,7 +65,6 @@ const ContactPage = () => {
       <section className="section-light py-20">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-            {/* Calendly placeholder + form */}
             <ScrollReveal>
               <div className="bg-card rounded-xl p-8 border border-border shadow-sm">
                 <h2 className="font-display text-2xl font-bold mb-6">Book a Demo</h2>
@@ -59,11 +76,11 @@ const ContactPage = () => {
                 <div className="border-t border-border pt-6">
                   <h3 className="font-display font-semibold mb-4">Or Send Us a Message</h3>
                   <form onSubmit={handleSubmit} className="space-y-4">
-                    <Input placeholder="Full Name *" required />
-                    <Input placeholder="Company Name *" required />
-                    <Input type="email" placeholder="Email *" required />
-                    <Input type="tel" placeholder="Phone (optional)" />
-                    <Select>
+                    <Input name="name" placeholder="Full Name *" required />
+                    <Input name="company" placeholder="Company Name *" required />
+                    <Input name="email" type="email" placeholder="Email *" required />
+                    <Input name="phone" type="tel" placeholder="Phone (optional)" />
+                    <Select name="industry">
                       <SelectTrigger><SelectValue placeholder="Industry" /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="hospitality">Hospitality & Tourism</SelectItem>
@@ -74,7 +91,7 @@ const ContactPage = () => {
                         <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
-                    <Textarea placeholder="Tell us about your business and what you're looking for..." rows={4} />
+                    <Textarea name="message" placeholder="Tell us about your business and what you're looking for..." rows={4} />
                     <Button type="submit" className="w-full" disabled={submitting}>
                       {submitting ? "Sending..." : "Send Message"}
                     </Button>
@@ -83,7 +100,6 @@ const ContactPage = () => {
               </div>
             </ScrollReveal>
 
-            {/* Right column */}
             <div className="space-y-8">
               <ScrollReveal delay={100}>
                 <div>
