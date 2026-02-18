@@ -29,8 +29,13 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-secondary/95 backdrop-blur-md border-b border-border/20">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <span className="font-display text-xl font-bold text-primary-foreground">
+        <Link to="/" className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-full border-2 border-primary flex items-center justify-center">
+            <div className="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+            </div>
+          </div>
+          <span className="font-display text-xl font-bold text-primary-foreground tracking-tight">
             Flex<span className="text-primary">Lever</span>
           </span>
         </Link>
