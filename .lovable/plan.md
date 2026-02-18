@@ -1,84 +1,144 @@
 
+# FlexLever Website — Production Readiness Revisions
 
-# FlexLever — AI Automation Agency Website
+This plan addresses every issue from the engineering audit, organized into implementation phases.
 
-## Brand & Design
-- **Deep navy (#1B2432) backgrounds** with **green (#4CAF50) accents**, clean modern SaaS aesthetic
-- Inter/DM Sans typography, generous whitespace, alternating dark/light sections
-- Subtle scroll animations (fade-in, slide-up), no stock photos — icons and abstract visuals
-- User will provide logo to be integrated throughout
+---
 
-## Pages & Structure
+## Phase 1: Critical Fixes (Launch Blockers)
 
-### 1. Home (Landing Page) `/`
-- **Hero**: Dark background, headline about transforming business operations with AI automation, badge pill "AI-Powered Business Automation", dual CTAs (Book a Demo + See Services)
-- **Social Proof Bar**: "Built for businesses using..." with integration logos (or text placeholders)
-- **Problem Section**: 3 pain-point cards about manual processes, wasted time, and scaling challenges
-- **Solution Section**: "Meet FlexLever" — 3 value pillars covering AI expertise, custom implementation, and ongoing optimization
-- **Services Overview**: Cards for each service (Audit, Retainer, Custom Solutions) with brief descriptions linking to full pages
-- **How It Works**: 3-step flow (Discovery → Implementation → Results)
-- **Key Metrics**: Stats section with animated count-up numbers
-- **Who It's For**: Industry cards — Hospitality & Tourism, Real Estate, Professional Services, Service Businesses
-- **Testimonials**: 3 placeholder quote cards (marked as early partner feedback)
-- **ROI Calculator**: Interactive sliders estimating time/money savings from automation
-- **FAQ Accordion**: 8-10 common questions about AI automation services
-- **Final CTA Section**: Full-width conversion block with demo booking button
+### 1. Fix index.html Meta Tags and SEO
+- Update `<title>` to "FlexLever -- AI-Powered Business Automation for Service Businesses"
+- Replace author, og:title, twitter:title, og:description, twitter:description with FlexLever branding
+- Remove TODO comments from the HTML
+- Update twitter:site to @FlexLever
 
-### 2. Services — AI Automation Audit `/services/audit`
-- Detailed breakdown of the audit process, deliverables, and what businesses can expect
-- Use cases by industry
-- CTA to book an audit
+### 2. Connect Contact Form to Real Submission
+- Replace the fake `setTimeout` in `ContactPage.tsx` with a real `fetch` call to Formspree (or Web3Forms)
+- Add `name` attributes to all form inputs (name, company, email, phone, industry, message)
+- Add proper error handling with destructive toast on failure
+- **Note**: You will need to sign up for a free Formspree account and provide the form ID, or we can use Web3Forms. We'll set up the form structure now and use a placeholder endpoint you can swap in.
 
-### 3. Services — AI Automation Retainer `/services/retainer`
-- Bronze/Silver/Gold tier breakdown (placeholder pricing)
-- What's included at each level, workflow examples
-- CTA to get started
+### 3. Blog Email Subscribe Handler
+- Add state and an `onSubmit` handler to the subscribe form in `BlogPage.tsx`
+- Show a success toast on submission
+- Wire to the same form service or a separate endpoint for email capture
 
-### 4. Services — Custom AI Solutions `/services/custom`
-- Chatbots, lead qualification, review management, document automation, etc.
-- Industry-specific examples (hospitality guest comms, real estate lead nurture)
-- CTA to discuss custom needs
+### 4. Fix CookieConsent / MobileCTA Overlap on Mobile
+- Add `mb-16` bottom margin to CookieConsent on mobile so it clears the sticky MobileCTA bar
+- Add `pb-16` to Footer on mobile to prevent MobileCTA from covering footer content
 
-### 5. How It Works `/how-it-works`
-- Detailed step-by-step: Discovery Call → Process Audit → Implementation → Optimization
-- Integration partners section
-- Dashboard/results preview
+---
 
-### 6. Pricing `/pricing`
-- Audit pricing card + Retainer tier cards (placeholder values, user will update)
-- Comparison table: FlexLever vs. hiring in-house vs. doing nothing
-- Founding member / beta callout section
-- Pricing FAQ
+## Phase 2: High-Priority Improvements
 
-### 7. About `/about`
-- Founding story, mission, values (Relationship-First, Built for Real Businesses, Results Over Features)
-- Team section (placeholder)
-- CTA to contact
+### 5. Remove Unused Dependencies
+Remove from `package.json`:
+- `@hookform/resolvers`, `react-hook-form`, `zod` (no forms using them)
+- `framer-motion` (not imported anywhere)
+- `recharts`, `react-day-picker`, `date-fns`, `embla-carousel-react`
+- `react-resizable-panels`, `input-otp`, `cmdk`, `next-themes`, `vaul`
+- Unused Radix packages: alert-dialog, aspect-ratio, avatar, checkbox, collapsible, context-menu, dialog, dropdown-menu, hover-card, label, menubar, navigation-menu, popover, progress, radio-group, scroll-area, separator, sheet, switch, tabs, toggle, toggle-group
 
-### 8. Contact / Book a Demo `/contact`
-- Calendly embed for self-scheduling
-- Fallback contact form (name, company, email, phone, industry dropdown, message)
-- "What to expect" section describing the demo/discovery call
-- Direct contact info
+Delete corresponding unused UI component files from `src/components/ui/`.
 
-### 9. Blog (Placeholder) `/blog`
-- Grid layout with 2-3 placeholder posts about AI automation for local businesses
-- Email signup section at bottom
+### 6. Add Route-Level Code Splitting
+- Convert all page imports in `App.tsx` to `React.lazy()`
+- Wrap `<Routes>` in `<Suspense>` with a minimal loading fallback
 
-### 10. Legal Pages `/privacy` and `/terms`
-- Standard legal page layouts
+### 7. Extract Index.tsx into Separate Components
+Move each section into `src/components/home/`:
+- `Hero.tsx`, `SocialProof.tsx`, `Problem.tsx`, `Solution.tsx`, `Services.tsx`, `HowItWorks.tsx`, `Metrics.tsx`, `Industries.tsx`, `Testimonials.tsx`, `ROICalculator.tsx`, `FAQ.tsx`, `FinalCTA.tsx`
+- `Index.tsx` becomes a simple composition of these imports
 
-## Global Elements
-- **Sticky nav**: Logo left, links center (Home, Services dropdown, How It Works, Pricing, About, Blog), "Book a Demo" button right
-- **Mobile**: Hamburger menu + sticky bottom CTA bar
-- **Footer**: 4-column layout (Brand, Services, Company, Legal) with social links
-- **Cookie consent banner**
-- **SEO meta tags** on all pages
+### 8. Remove Unused react-query Wrapper
+- Remove `QueryClient`, `QueryClientProvider` imports and wrapper from `App.tsx`
+- Remove `@tanstack/react-query` from dependencies
 
-## Interactive Features
-- ROI calculator with real-time output
-- FAQ accordions
-- Scroll-triggered animations
-- Smooth scroll for anchor links
-- Form validation with success/error states
+### 9. Remove Dual Toast System
+- Remove Sonner toast (keep Radix `useToast` which is already used by the contact form)
+- Remove `sonner` package from dependencies
+- Delete `src/components/ui/sonner.tsx`
 
+### 10. Clean Up NavLink Component
+- Delete `src/components/NavLink.tsx` since it is not imported anywhere
+
+---
+
+## Phase 3: Medium-Priority Polish
+
+### 11. Per-Page SEO with react-helmet-async
+- Install `react-helmet-async`
+- Add `<HelmetProvider>` wrapper in `App.tsx`
+- Add unique `<Helmet>` (title + description) to every page component
+
+### 12. Accessibility Improvements
+- Navbar mobile toggle: add `aria-label="Toggle navigation menu"` and `aria-expanded`
+- ROI calculator sliders: connect labels to sliders with `htmlFor`/`id`
+- Industry selector buttons: add `role="radiogroup"` and `aria-pressed`
+- Footer social links: add `aria-label` attributes ("LinkedIn", "Twitter")
+
+### 13. Fix CountUp Timer Leak
+- Move the `setInterval` timer reference outside the observer callback
+- Clear the interval in the useEffect cleanup return alongside `observer.disconnect()`
+
+### 14. Fix 404 Page
+- Replace `<a href="/">` with React Router `<Link to="/">`
+- Change `min-h-screen` to `min-h-[60vh]` to account for Navbar/Footer already rendered
+
+### 15. Qualify Metrics and Testimonials
+- Change metrics wording to projected/target language (e.g., "Target: 40% time saved")
+- Add disclaimer text: "Based on projections for service businesses"
+- Update testimonials subtitle to "Based on early partner conversations"
+
+### 16. Replace CSS Logo with Real Logo Asset
+- Use `src/assets/flexlever-logo.png` (already copied to project) as an `<img>` in Navbar
+- Add the logo icon to the Footer brand section as well
+
+### 17. Replace Favicon
+- Replace `public/favicon.ico` with the FlexLever logo asset
+- Add `<link rel="icon">` pointing to the new file in `index.html`
+
+---
+
+## Phase 4: Low-Priority / Polish
+
+### 18. Rename package.json
+- Change `"name"` from `"vite_react_shadcn_ts"` to `"flexlever"`
+
+### 19. Self-Host Google Fonts
+- Download DM Sans and Inter font files to `public/fonts/`
+- Replace the `@import url(...)` in `index.css` with local `@font-face` declarations using `font-display: swap`
+
+### 20. Add Error Boundary
+- Create `src/components/ErrorBoundary.tsx` (class component)
+- Wrap the app content in `App.tsx` with it
+- Show a friendly "Something went wrong" UI with a reload button
+
+### 21. Optimize ScrollReveal
+- Refactor `ScrollReveal.tsx` to use a single shared `IntersectionObserver` instance via a context provider instead of creating one observer per component
+
+### 22. Generate Sitemap
+- Add all routes to a static `public/sitemap.xml`
+- Reference it in `robots.txt`
+
+### 23. Verify robots.txt
+- Add `Sitemap: https://flexlever.lovable.app/sitemap.xml` to `robots.txt`
+
+### 24. Analytics Placeholder
+- Add commented-out GA4 script block in `index.html` with instructions for where to paste the tracking ID
+
+### 25. Mobile Footer Padding
+- Already addressed in Phase 1, item 4 (add `pb-16` on mobile to Footer)
+
+### 26. Consolidate Pricing References
+- Add "See full pricing details" links from service pages (Audit, Retainer) to `/pricing` instead of duplicating pricing info
+
+---
+
+## Technical Notes
+
+- **Form service**: The contact form and blog subscribe will be wired to Formspree/Web3Forms. You'll need to create an account and provide the form endpoint ID. We'll use a placeholder that you can swap in.
+- **Logo**: The file at `src/assets/flexlever-logo.png` will be used. If it needs to be re-uploaded, please attach it again.
+- **Bundle impact**: Removing unused dependencies should reduce the production bundle by roughly 300-500KB.
+- **Estimated scope**: ~20 files modified or created, ~30 files deleted (unused UI components).
