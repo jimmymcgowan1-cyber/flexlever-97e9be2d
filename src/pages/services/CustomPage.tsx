@@ -1,6 +1,7 @@
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Zap, MessageSquare, UserCheck, Star, FileText, ArrowRight } from "lucide-react";
+import { Zap, MessageSquare, UserCheck, Star, FileText } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const solutions = [
@@ -18,6 +19,10 @@ const examples = [
 
 const CustomPage = () => (
   <main>
+    <Helmet>
+      <title>Custom AI Solutions — FlexLever</title>
+      <meta name="description" content="From chatbots to document automation — FlexLever builds custom AI solutions tailored to your exact business needs." />
+    </Helmet>
     <section className="section-dark pt-28 pb-16">
       <div className="container mx-auto px-4 max-w-4xl text-center">
         <ScrollReveal>

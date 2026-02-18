@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Heart, Building, BarChart3 } from "lucide-react";
@@ -11,6 +12,10 @@ const values = [
 
 const AboutPage = () => (
   <main>
+    <Helmet>
+      <title>About — FlexLever AI Automation</title>
+      <meta name="description" content="FlexLever was built because we've lived the problem. Learn our story, mission, and values." />
+    </Helmet>
     <section className="section-dark pt-28 pb-16">
       <div className="container mx-auto px-4 max-w-4xl text-center">
         <ScrollReveal>

@@ -1,7 +1,12 @@
+import { Helmet } from "react-helmet-async";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const TermsPage = () => (
   <main>
+    <Helmet>
+      <title>Terms of Service — FlexLever</title>
+      <meta name="description" content="FlexLever's terms of service. Read our terms for using FlexLever's AI automation services." />
+    </Helmet>
     <section className="section-dark pt-28 pb-16">
       <div className="container mx-auto px-4 text-center">
         <h1 className="font-display text-4xl font-bold text-secondary-foreground">Terms of Service</h1>

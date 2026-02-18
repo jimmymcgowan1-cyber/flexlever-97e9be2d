@@ -1,6 +1,7 @@
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Phone, Search, Settings, BarChart3, ArrowRight } from "lucide-react";
+import { Phone, Search, Settings, BarChart3 } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const steps = [
@@ -14,6 +15,10 @@ const integrations = ["Jobber", "QuickBooks Online", "ServiceTitan", "HubSpot", 
 
 const HowItWorksPage = () => (
   <main>
+    <Helmet>
+      <title>How It Works — FlexLever AI Automation</title>
+      <meta name="description" content="Learn how FlexLever transforms your business operations in 4 simple steps: Discovery, Audit, Implementation, and Optimization." />
+    </Helmet>
     <section className="section-dark pt-28 pb-16">
       <div className="container mx-auto px-4 max-w-4xl text-center">
         <ScrollReveal>

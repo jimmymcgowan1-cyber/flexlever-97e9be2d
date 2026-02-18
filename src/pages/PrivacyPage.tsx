@@ -1,7 +1,12 @@
+import { Helmet } from "react-helmet-async";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const PrivacyPage = () => (
   <main>
+    <Helmet>
+      <title>Privacy Policy — FlexLever</title>
+      <meta name="description" content="FlexLever's privacy policy. Learn how we collect, use, and protect your information." />
+    </Helmet>
     <section className="section-dark pt-28 pb-16">
       <div className="container mx-auto px-4 text-center">
         <h1 className="font-display text-4xl font-bold text-secondary-foreground">Privacy Policy</h1>

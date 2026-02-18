@@ -1,6 +1,7 @@
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, X, Minus } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -28,6 +29,10 @@ const pricingFaqs = [
 
 const PricingPage = () => (
   <main>
+    <Helmet>
+      <title>Pricing — FlexLever AI Automation</title>
+      <meta name="description" content="Simple, transparent pricing for AI automation services. Retainer plans from $1,500-$3,500/mo. Most clients see ROI within the first month." />
+    </Helmet>
     <section className="section-dark pt-28 pb-16">
       <div className="container mx-auto px-4 text-center max-w-4xl">
         <ScrollReveal>
@@ -62,7 +67,6 @@ const PricingPage = () => (
       </div>
     </section>
 
-    {/* Founding Member */}
     <section className="section-dark py-16">
       <div className="container mx-auto px-4 max-w-3xl">
         <ScrollReveal>
@@ -76,7 +80,6 @@ const PricingPage = () => (
       </div>
     </section>
 
-    {/* Comparison */}
     <section className="section-light py-20">
       <div className="container mx-auto px-4 max-w-4xl">
         <ScrollReveal>
@@ -109,7 +112,6 @@ const PricingPage = () => (
       </div>
     </section>
 
-    {/* Pricing FAQ */}
     <section className="section-dark py-20">
       <div className="container mx-auto px-4 max-w-3xl">
         <ScrollReveal>
